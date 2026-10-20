@@ -1,0 +1,5 @@
+2026-10-20 10:00:01 INFO Server gestartet
+2026-10-20 10:00:05 WARNING Speicher fast voll
+2026-10-20 10:01:12 ERROR Datenbank nicht erreichbar
+2026-10-20 10:02:30 INFO Anfrage verarbeitet
+2026-10-20 10:03:45 ERROR Timeout bei Anfrage
