@@ -23,7 +23,7 @@ for file in log_files:
    try:
       text = file.read_text(encoding="utf-8")
    except OSError as error:
-      print(f"Fehler beim lesen der Datei {file}: {error}")
+      print(f"Fehler beim Lesen der Datei {file}: {error}")
       continue
       
    print(text)
