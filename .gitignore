@@ -8,3 +8,6 @@
 #IDE Settings 
 .idea/
 .vscode/
+
+#Generated reports 
+report.json

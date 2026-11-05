@@ -1,71 +1,33 @@
 from pathlib import Path
-from datetime import datetime
+from log_functions import LEVELS, read_log_file,count_log_levels,print_report,write_json_report
+def main():
 
-LEVELS=["ERROR", "INFO", "WARNING", "UNKNOWN", "INVALID"]
+    gesamt = dict.fromkeys(LEVELS, 0)
 
-def read_log_file(file):
-    text = file.read_text(encoding="utf-8")
-    lines = text.splitlines()
-    return lines 
+    log_files = Path("logs").glob("*.log")
 
-def count_log_levels(lines):
-    zaehlen = dict.fromkeys(LEVELS, 0)
-  
-    for line in lines:
-        parts = line.split()
-
-        if not parts:
-           continue
-
-        if len(parts) < 3:
-           zaehlen["INVALID"] += 1
-           continue
+    for file in log_files:
         try:
-           datetime.strptime(parts[0]+ " " + parts[1], "%Y-%m-%d %H:%M:%S")
-        except ValueError:
-           zaehlen["INVALID"] += 1
-           continue
-        level = parts[2]
-        if level in LEVELS:
-           zaehlen[level] += 1
-        else:
-           zaehlen["UNKNOWN"] += 1
-    return zaehlen
+            lines = read_log_file(file)
+        except OSError as error:
+            print(f"Fehler beim Lesen der Datei {file}: {error}")
+            continue
 
-def print_report(file, ergebnis, anzahl_zeilen):
-   
-    print(f"Zeilen: {anzahl_zeilen}")
-   
-    print(f"Datei: {file}")
-   
-    for level in ergebnis:
-        print(f"{level}: {ergebnis[level]}")
+        ergebnis = count_log_levels(lines)
 
-    print("_________________________________")
-   
-  
-gesamt = dict.fromkeys(LEVELS, 0)
+        print_report(file, ergebnis, len(lines))
 
-log_files = Path("logs").glob("*.log")
+        for level in gesamt:
+            gesamt[level] += ergebnis[level]
 
-for file in log_files:
-    try:
-        lines = read_log_file(file)
-    except OSError as error:
-        print(f"Fehler beim Lesen der Datei {file}: {error}")
-        continue
 
-    ergebnis = count_log_levels(lines)
 
-    print_report(file, ergebnis, len(lines))
+    print("Gesamtergebnis:")
 
     for level in gesamt:
-        gesamt[level] += ergebnis[level]
-
-
-print("Gesamtergebnis:")
-
-for level in gesamt:
-    print(f"{level}: {gesamt[level]}")
+        print(f"{level}: {gesamt[level]}")
+    write_json_report(gesamt, "report.json")
+if __name__ == "__main__":
+    main()
 
    
