@@ -31,7 +31,7 @@ def main():
 
     for level in gesamt:
         print(f"{level}: {gesamt[level]}")
-        REPORT_FILE = BASE_DIR / "report.json"
+    REPORT_FILE = BASE_DIR / "report.json"
     write_json_report(gesamt, REPORT_FILE)
 if __name__ == "__main__":
     main()

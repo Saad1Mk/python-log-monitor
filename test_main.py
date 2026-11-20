@@ -1,4 +1,5 @@
 import pytest 
+import json 
 from log_functions import count_log_levels,write_json_report
 @pytest.mark.parametrize(
     "lines, expected",
@@ -107,7 +108,7 @@ def test_write_json_report(tmp_path):
     }
     output_file =tmp_path / "report.json"
     write_json_report(results, output_file)
-    import json 
+    
     with open (output_file, encoding="utf-8") as file:
         actual = json.load(file)
 
